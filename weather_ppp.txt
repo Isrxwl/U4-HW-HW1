@@ -1,0 +1,51 @@
+#Pseudocodigo:
+
+Funcion safe_fetch(latitude, longitude, days)
+    Intentar
+        respuesta = fetch_forecast(latitude, longitude, days)
+        Retornar respuesta
+        
+    Capturar ConnectionError
+        Escribir en "errores.log": "Falla de conexión"
+        Retornar Nulo
+        
+    Capturar Timeout
+        Escribir en "errores.log": "Tiempo de espera agotado"
+        Retornar Nulo
+        
+    Capturar HTTPError
+        Escribir en "errores.log": "Error de estado HTTP"
+        Retornar Nulo
+        
+    Capturar Exception general
+        Escribir en "errores.log": "Error inesperado general"
+        Retornar Nulo
+    FinIntentar
+FinFuncion
+
+
+Funcion find_key(obj, key)
+    Definir resultados Como Lista
+    Inicializar resultados = []
+    
+    Si tipo_de(obj) Es Diccionario Entonces
+        Para Cada (clave, valor) En obj Hacer
+            Si clave == key Entonces
+                Agregar valor a resultados
+            FinSi
+            
+            Si tipo_de(valor) Es Diccionario O tipo_de(valor) Es Lista Entonces
+                Agregar find_key(valor, key) a resultados  // Llamada recursiva
+            FinSi
+        FinPara
+        
+    Sino Si tipo_de(obj) Es Lista Entonces
+        Para Cada elemento En obj Hacer
+            Si tipo_de(elemento) Es Diccionario O tipo_de(elemento) Es Lista Entonces
+                Agregar find_key(elemento, key) a resultados  // Llamada recursiva
+            FinSi
+        FinPara
+    FinSi
+    
+    Retornar resultados
+FinFuncion
